@@ -118,16 +118,8 @@ module MaxCDN
         return self.delete("/zones/pull.json/#{zone_id}/cache", {}, options)
       end
 
-      if file_or_files.is_a?(String)
+      if file_or_files.is_a?(String) || file_or_files.is_a?(Array)
         return self.delete("/zones/pull.json/#{zone_id}/cache", { "files" => file_or_files }, options)
-      end
-
-      if file_or_files.is_a?(Array)
-        result = {}
-        file_or_files.each do |file|
-          result[file] = self.delete("/zones/pull.json/#{zone_id}/cache", { "files" => file }, options)
-        end
-        return result
       end
 
       if file_or_files.is_a?(Hash)
