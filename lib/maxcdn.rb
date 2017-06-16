@@ -78,6 +78,11 @@ module MaxCDN
 
           # Second, set 'Content-Type' to our desired value.
           curb.headers["Content-Type"] = content_type
+
+          [:timeout, :connect_timeout].each do |curb_opt|
+            next unless options.key?(curb_opt)
+            curb.send("#{curb_opt}=".to_sym, options[curb_opt])
+          end
         end
 
         return response if options[:debug_request]
