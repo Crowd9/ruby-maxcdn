@@ -75,9 +75,9 @@ class Client < Minitest::Test
   end
 
   def test__get_url
-    assert_equal "https://rws.maxcdn.com/alias/foo",
+    assert_equal "https://rws.maxcdn.com:443/alias/foo",
       @max._get_url("/foo")
-    assert_equal "https://rws.maxcdn.com/alias/foo?foo=foo%20bar",
+    assert_equal "https://rws.maxcdn.com:443/alias/foo?foo=foo%20bar",
       @max._get_url("/foo", { :foo => "foo bar" })
   end
 

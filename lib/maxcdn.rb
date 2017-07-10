@@ -12,6 +12,7 @@ module MaxCDN
     def initialize(company_alias, key, secret, server="rws.maxcdn.com", secure_connection=true, _debug=false)
       @debug = _debug
       @secure_connection = secure_connection
+      @port = secure_connection ? 443 : 80
       @company_alias = company_alias
       @server = server
       @request_signer = Signet::OAuth1::Client.new(
@@ -27,7 +28,7 @@ module MaxCDN
     end
 
     def _get_url uri, params={}
-      url = "#{_connection_type}://#{@server}/#{@company_alias}/#{uri.gsub(/^\//, "")}"
+      url = "#{_connection_type}://#{@server}:#{@port}/#{@company_alias}/#{uri.gsub(/^\//, "")}"
       if params and not params.empty?
         url += "?#{params.to_params}"
       end
