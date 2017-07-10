@@ -1,7 +1,3 @@
-# MaxCDN is Hiring!
-
-Do you like building cool stuff?  Do APIs keep you up at night? We're looking for our next superstar hacker and you could be it. Interested? Check out our job posting on [stackoverflow](http://careers.stackoverflow.com/jobs/37078/senior-web-engineer-for-fun-growing-la-startup-maxcdn&a=JdFbT4OY).
-
 # MaxCDN REST Web Services Ruby Client
 
 [![Build Status](https://travis-ci.org/MaxCDN/ruby-maxcdn.png?branch=master)](https://travis-ci.org/MaxCDN/ruby-maxcdn) &nbsp; [![Gem Version](https://badge.fury.io/rb/maxcdn.png)](http://badge.fury.io/rb/maxcdn)
@@ -29,7 +25,7 @@ require 'maxcdn'
 api = MaxCDN::Client.new("myalias", "consumer_key", "consumer_secret")
 
 ####
-# Turn on debugging for underlying Curl::Easy and CurbFu modules
+# Turn on debugging outputs
 #
 # api.debug = true
 
@@ -97,6 +93,15 @@ bundle exec ruby ./test/integration.rb # requires host's IP be whitelisted
 ```
 
 # Change Log
+
+##### 0.3.0
+
+* Replace CurbFu with Faraday (#10).
+
+##### 0.2.1
+
+* Upgrade signet gem to allow for use with the faraday 0.9.x series (#7).
+* See https://rubygems.org/gems/maxcdn/versions/0.2.1 for gem.
 
 ##### 0.1.5
 

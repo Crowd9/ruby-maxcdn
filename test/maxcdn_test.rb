@@ -8,6 +8,7 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 require "webmock"
 include WebMock::API
+WebMock.enable!
 
 host = "https://rws.maxcdn.com/alias"
 
@@ -15,7 +16,6 @@ expected_headers = {
   'Authorization' => /.+/,
   'Cache-Control' => /.+/,
   'Content-Type'  => "application/json",
-  'Expect'        => /.*/,
   'User-Agent'    => "Ruby MaxCDN API Client"
 }
 
@@ -38,7 +38,7 @@ stub_request(:delete, host+"/zones/pull.json/12345/cache?files=foo.txt")
   .with(:headers => expected_headers)
   .to_return(:body => '{"foo":"bar"}')
 
-stub_request(:delete, host+"/zones/pull.json/12345/cache?files=bar.txt")
+stub_request(:delete, host+"/zones/pull.json/12345/cache?files[]=bar.txt&files[]=foo.txt")
   .with(:headers => expected_headers)
   .to_return(:body => '{"foo":"bar"}')
 
@@ -101,7 +101,7 @@ class Client < Minitest::Test
 
   def test__response_as_json_debug_request
     res = @max._response_as_json("post", "zones/pull.json", { :body => true, :debug_request => true }, { "foo"=> "bar", "bar" => "foo" })
-    assert_equal(CurbFu::Response::Base, res.class)
+    assert_equal(Faraday::Response, res.class)
   end
 
   def test_custom_header
@@ -138,11 +138,8 @@ class Client < Minitest::Test
   end
 
   def test_purge_files
-    assert_equal({"foo.txt"=>{"foo"=>"bar"}, "bar.txt"=>{"foo"=>"bar"}}, @max.purge(12345, [ "foo.txt", "bar.txt" ]))
-  end
-
-  def test_purge_files
-    assert_equal({"foo.txt"=>{"foo"=>"bar"}, "bar.txt"=>{"foo"=>"bar"}}, @max.purge(12345, { :files => [ "foo.txt", "bar.txt" ]}))
+    assert_equal({ "foo" => "bar" }, @max.purge(12345, [ "foo.txt", "bar.txt" ]))
+    assert_equal({ "foo" => "bar" }, @max.purge(12345, { :files => [ "foo.txt", "bar.txt" ]}))
   end
 end
 
